@@ -5,11 +5,24 @@ allprojects {
         mavenCentral()
     }
 
-    dependencies {
-        compileOnly "org.projectlombok:lombok:1.18.16"
-        annotationProcessor "org.projectlombok:lombok:1.18.16"
+    ext {
+        lombokVersion = '1.18.16'
+        junit = '5.7.1'
+        assertj = '3.11.1'
+    }
 
-        testCompileOnly "org.projectlombok:lombok:1.18.16"
-        testAnnotationProcessor "org.projectlombok:lombok:1.18.16"
+    dependencies {
+        compileOnly "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$junit"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit"
+        testImplementation "org.assertj:assertj-core:$assertj"
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
