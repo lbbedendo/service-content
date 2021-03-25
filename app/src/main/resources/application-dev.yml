@@ -1,0 +1,8 @@
+micronaut:
+  multitenancy:
+    tenantresolver:
+      httpheader:
+        enabled: false
+      fixed:
+        tenant-id: kroton
+        enabled: true
