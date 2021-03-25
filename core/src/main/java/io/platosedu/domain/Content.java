@@ -1,8 +1,11 @@
 package io.platosedu.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Value;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -13,11 +16,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Content {
 
-    private ObjectId id;
+    private ContentId id;
     private Type type;
     private String name;
     private String description;
@@ -26,7 +31,7 @@ public class Content {
     private Document data;
     private List<Document> attributes;
     private String lang;
-    private List<ObjectId> tags;
+    private List<Tag.TagId> tags;
     private Integer questions;
     private String path;
     private Integer examAttempts;
@@ -101,6 +106,11 @@ public class Content {
         TIP,
         INTERVIEW,
         PROBLEM_SITUATION
+    }
+
+    @Value
+    public static class ContentId {
+        private final ObjectId id;
     }
 }
 

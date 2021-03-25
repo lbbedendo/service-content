@@ -1,19 +1,24 @@
 package io.platosedu.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Value;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Question {
 
-    private ObjectId id;
+    private QuestionId id;
     private String description;
     private String explanation;
     private List<Option> options;
@@ -77,4 +82,8 @@ public class Question {
 
     }
 
+    @Value
+    public static class QuestionId {
+        private final ObjectId id;
+    }
 }

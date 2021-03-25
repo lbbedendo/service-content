@@ -3,6 +3,7 @@ package io.platosedu.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Value;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
@@ -34,4 +35,8 @@ public class Tag {
         this.tenantId = tenantId;
     }
 
+    @Value
+    public static class TagId {
+        private final ObjectId id;
+    }
 }

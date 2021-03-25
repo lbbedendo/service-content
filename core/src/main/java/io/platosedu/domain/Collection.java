@@ -1,18 +1,23 @@
 package io.platosedu.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Value;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Collection {
 
-    private ObjectId id;
+    private CollectionId id;
     private String name;
     private String description;
     private Boolean active;
@@ -21,20 +26,8 @@ public class Collection {
     private LocalDateTime updatedAt;
     private String tenantId;
 
-    public Collection(ObjectId id,
-                      String name,
-                      String description,
-                      Boolean active,
-                      LocalDateTime createdAt,
-                      LocalDateTime updatedAt,
-                      String tenantId) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.active = active;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.tenantId = tenantId;
+    @Value
+    public static class CollectionId {
+        private final ObjectId id;
     }
-
 }
