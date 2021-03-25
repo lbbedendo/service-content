@@ -19,24 +19,10 @@ public class Tag {
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String tenantId;
-
-    public Tag(ObjectId id,
-               String name,
-               Boolean active,
-               LocalDateTime updatedAt,
-               LocalDateTime createdAt,
-               String tenantId) {
-        this.id = id;
-        this.name = name;
-        this.active = active;
-        this.updatedAt = updatedAt;
-        this.createdAt = createdAt;
-        this.tenantId = tenantId;
-    }
+    private TenantId tenantId;
 
     @Value
     public static class TagId {
-        private final ObjectId id;
+        ObjectId id;
     }
 }

@@ -29,7 +29,7 @@ public class Question {
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String tenantId;
+    private TenantId tenantId;
 
     public enum Level {
         EASY(1),
@@ -84,6 +84,6 @@ public class Question {
 
     @Value
     public static class QuestionId {
-        private final ObjectId id;
+        ObjectId id;
     }
 }

@@ -27,7 +27,7 @@ public class Link {
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String tenantId;
+    private TenantId tenantId;
 
     @Data
     @Builder
@@ -56,7 +56,7 @@ public class Link {
 
         @Value
         public static class ModalityId {
-            private final ObjectId id;
+            ObjectId id;
         }
     }
 
@@ -70,6 +70,6 @@ public class Link {
 
     @Value
     public static class LinkId {
-        private final ObjectId id;
+        ObjectId id;
     }
 }

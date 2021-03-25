@@ -48,7 +48,7 @@ public class Content {
     private Integer examTimeoutInMinutes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String tenantId;
+    private TenantId tenantId;
 
     public enum Type {
         FOLDER,
@@ -110,7 +110,7 @@ public class Content {
 
     @Value
     public static class ContentId {
-        private final ObjectId id;
+        ObjectId id;
     }
 }
 

@@ -23,10 +23,10 @@ public class AttributeType {
     private String type;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String tenantId;
+    private TenantId tenantId;
 
     @Value
     public static class AttributeTypeId {
-        private final ObjectId id;
+        ObjectId id;
     }
 }

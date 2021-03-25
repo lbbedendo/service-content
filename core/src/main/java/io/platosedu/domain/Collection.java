@@ -24,10 +24,10 @@ public class Collection {
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String tenantId;
+    private TenantId tenantId;
 
     @Value
     public static class CollectionId {
-        private final ObjectId id;
+        ObjectId id;
     }
 }
