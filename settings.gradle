@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'service-content'
-include('app', 'list', 'utilities')
+include('app', 'core')
