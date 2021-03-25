@@ -1,11 +1,11 @@
 package io.platosedu.application.port.out;
 
-import io.platosedu.domain.FileAddress;
+import io.micronaut.http.multipart.CompletedFileUpload;
+import io.platosedu.domain.ContentFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 public interface FileRepository {
-    URL upload(FileAddress fileAddress, InputStream inputStream) throws IOException;
+    URL save(ContentFile contentFile, CompletedFileUpload fileUpload) throws IOException;
 }

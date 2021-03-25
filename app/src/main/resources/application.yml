@@ -1,0 +1,45 @@
+micronaut:
+  application:
+    name: service-content
+  executors:
+    io:
+      type: fixed
+      nThreads: 75
+  server:
+    port: 8080
+    cors:
+      enabled: true
+    multipart.max-file-size: 104857600
+  security:
+    authentication: bearer
+    enabled: true
+    token:
+      jwt:
+        enabled: true
+        signatures:
+          secret:
+            validation:
+              secret: ${JWT_GENERATOR_SIGNATURE_SECRET}
+        generator:
+          access-token:
+            expiration: 86400
+  multitenancy:
+    tenantresolver:
+      httpheader:
+        enabled: true
+mongodb:
+  uri: ${MONGO_URI}
+  database: ${MONGO_DATABASE:content}
+  collection: ${MONGO_COLLECTION:content}
+  options:
+    readConcern: majority
+jackson:
+  serialization:
+    writeDatesAsTimestamps: false
+aws:
+  s3:
+    region: ${AWS_S3_REGION}
+    multipart-upload-threshold: 10485760
+    max-upload-threads: 5
+  key: ${AWS_ACCESS_KEY_ID}
+  secret: ${AWS_SECRET_KEY}
