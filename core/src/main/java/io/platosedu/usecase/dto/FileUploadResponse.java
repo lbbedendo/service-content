@@ -1,4 +1,4 @@
-package io.platosedu.application.port.in.dto;
+package io.platosedu.usecase.dto;
 
 import lombok.Data;
 

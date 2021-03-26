@@ -4,7 +4,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.multipart.CompletedFileUpload;
-import io.platosedu.application.port.in.dto.FileUploadResponse;
+import io.platosedu.usecase.dto.FileUploadResponse;
 
 import java.io.IOException;
 

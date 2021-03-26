@@ -1,3 +1,4 @@
 dependencies {
-    implementation "org.mongodb:mongodb-driver-sync:4.1.1"
+    implementation("org.mongodb:mongodb-driver-sync:$mongoDriverVersion")
+    implementation("io.micronaut.data:micronaut-data-model:$micronautDataVersion")
 }

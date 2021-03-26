@@ -1,14 +1,13 @@
-package io.platosedu.application.service;
+package io.platosedu.service;
 
 import io.micronaut.http.multipart.CompletedFileUpload;
-import io.platosedu.application.port.in.FileUploadUsecase;
-import io.platosedu.application.port.in.dto.FileUploadResponse;
-import io.platosedu.application.port.out.FileRepository;
 import io.platosedu.domain.ContentFile;
+import io.platosedu.persistence.FileRepository;
+import io.platosedu.usecase.FileUploadUsecase;
+import io.platosedu.usecase.dto.FileUploadResponse;
 
 import javax.inject.Singleton;
 import java.io.IOException;
-import java.util.UUID;
 
 @Singleton
 public class FileUploadService implements FileUploadUsecase {
@@ -20,10 +19,7 @@ public class FileUploadService implements FileUploadUsecase {
 
     @Override
     public FileUploadResponse upload(String location, CompletedFileUpload fileUpload) throws IOException {
-        var contentFile = ContentFile.builder()
-                .name(UUID.randomUUID().toString().concat("_").concat(fileUpload.getFilename()))
-                .location(location)
-                .build();
+        var contentFile = ContentFile.from(location, fileUpload.getFilename());
         var url = fileRepository.save(contentFile, fileUpload);
         return FileUploadResponse.of(true, url);
     }

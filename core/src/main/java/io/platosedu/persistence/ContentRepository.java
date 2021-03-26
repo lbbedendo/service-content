@@ -1,4 +1,4 @@
-package io.platosedu.application.port.out;
+package io.platosedu.persistence;
 
 import io.platosedu.domain.Content;
 import io.platosedu.domain.TenantId;

@@ -8,8 +8,8 @@ import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.platosedu.adapter.in.api.FileUploadApi;
-import io.platosedu.application.port.in.FileUploadUsecase;
-import io.platosedu.application.port.in.dto.FileUploadResponse;
+import io.platosedu.usecase.FileUploadUsecase;
+import io.platosedu.usecase.dto.FileUploadResponse;
 
 import java.io.IOException;
 
