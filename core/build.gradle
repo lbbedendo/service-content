@@ -1,4 +1,17 @@
+plugins {
+    id "io.micronaut.library" version "1.4.2"
+}
+
+micronaut {
+    version("$micronautVersion")
+    processing {
+        incremental(true)
+        annotations("io.platosedu.*")
+    }
+}
+
 dependencies {
     implementation("org.mongodb:mongodb-driver-sync:$mongoDriverVersion")
     implementation("io.micronaut.data:micronaut-data-model:$micronautDataVersion")
+    implementation("io.micronaut:micronaut-http-client")
 }
