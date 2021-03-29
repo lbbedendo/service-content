@@ -29,11 +29,12 @@ public class ContentFilters {
     private String parentId;
     private Set<Link.Modality.Type> linkModality;
     private Content.ProductionStatus productionStatus;
+    private GraphSearchSettings graphSearchSettings;
 
     @Data
     @Builder
-    public static class GraphLookupFilters {
-        private static final int DEFAULT_GRAPH_LOOKUP_DEPTH = 50;
-        private Integer maxDepth = DEFAULT_GRAPH_LOOKUP_DEPTH;
+    public static class GraphSearchSettings {
+        private static final int DEFAULT_GRAPH_SEARCH_DEPTH = 50;
+        private Integer maxDepth = DEFAULT_GRAPH_SEARCH_DEPTH;
     }
 }
