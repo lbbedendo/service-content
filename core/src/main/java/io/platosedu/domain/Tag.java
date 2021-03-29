@@ -22,6 +22,6 @@ public class Tag {
 
     @Value
     public static class TagId {
-        String id;
+        String value;
     }
 }

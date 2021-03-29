@@ -26,6 +26,6 @@ public class AttributeType {
 
     @Value
     public static class AttributeTypeId {
-        String id;
+        String value;
     }
 }

@@ -4,5 +4,5 @@ import lombok.Value;
 
 @Value
 public class TenantId {
-    String id;
+    String value;
 }

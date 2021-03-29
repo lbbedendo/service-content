@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Value;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -56,7 +55,7 @@ public class Link {
 
         @Value
         public static class ModalityId {
-            ObjectId id;
+            String value;
         }
     }
 
@@ -70,6 +69,6 @@ public class Link {
 
     @Value
     public static class LinkId {
-        String id;
+        String value;
     }
 }

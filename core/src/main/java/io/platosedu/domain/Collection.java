@@ -27,6 +27,6 @@ public class Collection {
 
     @Value
     public static class CollectionId {
-        String id;
+        String value;
     }
 }

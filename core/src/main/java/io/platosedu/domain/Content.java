@@ -6,10 +6,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Value;
-import org.bson.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,8 +27,8 @@ public class Content {
     private String description;
     private Boolean root;
     private Boolean active;
-    private Document data;
-    private List<Document> attributes;
+    private Map<String, Object> data;
+    private List<Map<String, Object>> attributes;
     private String lang;
     private List<Tag.TagId> tags;
     private Integer questions;
@@ -109,7 +109,7 @@ public class Content {
 
     @Value
     public static class ContentId {
-        String id;
+        String value;
     }
 }
 
