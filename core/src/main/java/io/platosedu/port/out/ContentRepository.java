@@ -16,6 +16,7 @@ public interface ContentRepository {
     Content update(Content.ContentId id, TenantId tenantId, Content content);
     Optional<Content> findOne(Content.ContentId id, TenantId tenantId);
     Page<Content> findAll(Pageable pageable, ContentFilters filters, TenantId tenantId);
-    Page<Content> findAllChildrenOfContent(Pageable pageable, TenantId tenantId, ContentFilters filters);
-    List<LinkedContentResponse> findAllLevelChildrenOfContent(String contentId, ContentFilters filters);
+    Page<Content> findAll(Pageable pageable, TenantId tenantId);
+    Page<Content> findFirstLevelChildrenOfContent(Pageable pageable, TenantId tenantId, ContentFilters filters);
+    List<LinkedContentResponse> findAllLevelChildrenOfContent(Content.ContentId contentId, ContentFilters filters);
 }

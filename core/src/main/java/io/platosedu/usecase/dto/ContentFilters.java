@@ -35,6 +35,7 @@ public class ContentFilters {
     @Builder
     public static class GraphSearchSettings {
         private static final int DEFAULT_GRAPH_SEARCH_DEPTH = 50;
+        @Builder.Default
         private Integer maxDepth = DEFAULT_GRAPH_SEARCH_DEPTH;
     }
 }
