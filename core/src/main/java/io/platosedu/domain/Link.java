@@ -70,6 +70,6 @@ public class Link {
 
     @Value
     public static class LinkId {
-        ObjectId id;
+        String id;
     }
 }

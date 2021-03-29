@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Value;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +26,6 @@ public class AttributeType {
 
     @Value
     public static class AttributeTypeId {
-        ObjectId id;
+        String id;
     }
 }

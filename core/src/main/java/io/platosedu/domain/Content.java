@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -110,7 +109,7 @@ public class Content {
 
     @Value
     public static class ContentId {
-        ObjectId id;
+        String id;
     }
 }
 

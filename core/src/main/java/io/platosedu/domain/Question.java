@@ -84,6 +84,6 @@ public class Question {
 
     @Value
     public static class QuestionId {
-        ObjectId id;
+        String id;
     }
 }
