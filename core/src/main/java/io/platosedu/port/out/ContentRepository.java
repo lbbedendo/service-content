@@ -1,4 +1,4 @@
-package io.platosedu.persistence;
+package io.platosedu.port.out;
 
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;

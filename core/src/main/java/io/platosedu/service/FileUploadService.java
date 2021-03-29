@@ -2,7 +2,7 @@ package io.platosedu.service;
 
 import io.micronaut.http.multipart.CompletedFileUpload;
 import io.platosedu.domain.ContentFile;
-import io.platosedu.persistence.FileRepository;
+import io.platosedu.port.out.FileRepository;
 import io.platosedu.usecase.FileUploadUsecase;
 import io.platosedu.usecase.dto.FileUploadResponse;
 

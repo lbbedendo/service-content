@@ -1,4 +1,4 @@
-package io.platosedu.persistence;
+package io.platosedu.port.out;
 
 import io.micronaut.http.multipart.CompletedFileUpload;
 import io.platosedu.domain.ContentFile;
