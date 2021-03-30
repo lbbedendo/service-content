@@ -25,6 +25,7 @@ dependencies {
     annotationProcessor("io.micronaut.configuration:micronaut-openapi")
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     annotationProcessor("io.micronaut.configuration:micronaut-openapi")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapStructVersion")
     implementation platform("io.micronaut:micronaut-bom")
     implementation("io.micronaut:micronaut-inject")
     implementation("io.micronaut:micronaut-http-client")
