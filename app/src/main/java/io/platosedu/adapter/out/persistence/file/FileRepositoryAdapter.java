@@ -1,4 +1,4 @@
-package io.platosedu.adapter.out.persistence;
+package io.platosedu.adapter.out.persistence.file;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
