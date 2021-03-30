@@ -18,8 +18,10 @@ import io.platosedu.adapter.in.dto.request.ContentRequest;
 import io.platosedu.adapter.in.dto.response.ContentResponse;
 import io.platosedu.adapter.out.persistence.mapper.ContentMapper;
 import io.platosedu.configuration.authentication.CustomUserDetails;
+import io.platosedu.domain.Content;
 import io.platosedu.domain.TenantId;
 import io.platosedu.usecase.CreateContentUsecase;
+import io.platosedu.usecase.FindAllContentUsecase;
 import io.platosedu.usecase.FindAllLevelChildrenOfContentUsecase;
 import io.platosedu.usecase.FindFirstLevelChildrenOfContentUsecase;
 import io.platosedu.usecase.FindOneContentUsecase;
@@ -37,6 +39,7 @@ public class ContentController extends MultiTenantController implements ContentA
     private final CreateContentUsecase createContentUsecase;
     private final UpdateContentUsecase updateContentUsecase;
     private final FindOneContentUsecase findOneContentUsecase;
+    private final FindAllContentUsecase findAllContentUsecase;
     private final FindFirstLevelChildrenOfContentUsecase findFirstLevelChildrenOfContentUsecase;
     private final FindAllLevelChildrenOfContentUsecase findAllLevelChildrenOfContentUsecase;
     private final InactivateContentUsecase inactivateContentUsecase;
@@ -47,6 +50,7 @@ public class ContentController extends MultiTenantController implements ContentA
                              CreateContentUsecase createContentUsecase,
                              UpdateContentUsecase updateContentUsecase,
                              FindOneContentUsecase findOneContentUsecase,
+                             FindAllContentUsecase findAllContentUsecase,
                              FindFirstLevelChildrenOfContentUsecase findFirstLevelChildrenOfContentUsecase,
                              FindAllLevelChildrenOfContentUsecase findAllLevelChildrenOfContentUsecase,
                              InactivateContentUsecase inactivateContentUsecase,
@@ -55,6 +59,7 @@ public class ContentController extends MultiTenantController implements ContentA
         this.createContentUsecase = createContentUsecase;
         this.updateContentUsecase = updateContentUsecase;
         this.findOneContentUsecase = findOneContentUsecase;
+        this.findAllContentUsecase = findAllContentUsecase;
         this.findFirstLevelChildrenOfContentUsecase = findFirstLevelChildrenOfContentUsecase;
         this.findAllLevelChildrenOfContentUsecase = findAllLevelChildrenOfContentUsecase;
         this.inactivateContentUsecase = inactivateContentUsecase;
@@ -71,34 +76,53 @@ public class ContentController extends MultiTenantController implements ContentA
 
     @Override
     public HttpResponse<ContentResponse> update(String id, @Valid @Body ContentRequest contentRequest) {
-        return null;
+        var contentId = new Content.ContentId(id);
+        var tenantId = new TenantId(resolveTenantId());
+        var content = contentMapper.fromContentRequest(contentRequest);
+        return findOneContentUsecase.findOne(contentId, tenantId)
+                .map(c -> HttpResponse.ok(contentMapper.toContentResponse(
+                        updateContentUsecase.update(contentId, tenantId, content))))
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
     public HttpResponse<Page<ContentResponse>> findAll(Pageable pageable, ContentQueryParams params) {
-        return null;
+        params.validateDateRange();
+        var tenantId = new TenantId(resolveTenantId());
+        var filters = params.toContentFilters();
+        return HttpResponse.ok(findAllContentUsecase.findAll(pageable, filters, tenantId)
+                        .map(contentMapper::toContentResponse));
     }
 
     @Override
     public HttpResponse<ContentResponse> findOne(String id) {
-        return null;
+        var contentId = new Content.ContentId(id);
+        var tenantId = new TenantId(id);
+        return findOneContentUsecase.findOne(contentId, tenantId)
+                .map(content -> HttpResponse.ok(contentMapper.toContentResponse(content)))
+                .orElseGet(HttpResponse::notFound);
     }
 
     @Override
     public HttpResponse<Page<ContentResponse>> findFirstLevelChildrenOfContent(Pageable pageable,
                                                                                String contentId,
                                                                                ContentChildrenQueryParams params) {
-        return null;
+        throw new UnsupportedOperationException("Not implemented!");
     }
 
     @Override
     public HttpResponse<List<LinkedContentResponse>> findAllLevelChildrenOfContent(String contentId,
                                                                                    ContentAllLevelChildrenQueryParams params) {
-        return null;
+        throw new UnsupportedOperationException("Not implemented!");
     }
 
     @Override
     public HttpResponse<ContentResponse> delete(String id) {
-        return null;
+        var contentId = new Content.ContentId(id);
+        var tenantId = new TenantId(resolveTenantId());
+        return findOneContentUsecase.findOne(contentId, tenantId)
+                .map(content -> HttpResponse.ok(contentMapper.toContentResponse(
+                        inactivateContentUsecase.inactivate(contentId, tenantId))))
+                .orElseGet(HttpResponse::notFound);
     }
 }

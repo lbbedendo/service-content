@@ -3,6 +3,7 @@ package io.platosedu.adapter.in.dto.params;
 import io.platosedu.domain.Content;
 import io.platosedu.domain.Link;
 import io.platosedu.exception.InvalidDateRangeException;
+import io.platosedu.usecase.dto.ContentFilters;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -40,5 +42,22 @@ public class ContentQueryParams {
 
     public static ContentQueryParams empty() {
         return new ContentQueryParams();
+    }
+
+    public ContentFilters toContentFilters() {
+        return ContentFilters.builder()
+                .type(type)
+                .tags(tags)
+                .active(active)
+                .root(root)
+                .startDate(startDate)
+                .endDate(endDate)
+                .name(name)
+                .instructorUserName(instructorUserName)
+                .text(text)
+                .visible(visible)
+                .linkModality(Set.of(linkModality))
+                .productionStatus(productionStatus)
+                .build();
     }
 }

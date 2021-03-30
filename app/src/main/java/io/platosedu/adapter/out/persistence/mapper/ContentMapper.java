@@ -23,5 +23,7 @@ public interface ContentMapper {
 
     Content fromContentRequest(ContentRequest contentRequest, String createdByUserId);
 
+    Content fromContentRequest(ContentRequest contentRequest);
+
     ContentResponse toContentResponse(Content content);
 }
