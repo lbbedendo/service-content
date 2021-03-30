@@ -13,3 +13,5 @@ Tecnologias utilizadas:
 * Micronaut
 * MongoDB
 * JUnit 5 e AssertJ
+
+Aviso: Esse projeto é um estudo de caso para o aprendizado de arquitetura hexagonal, portanto, não o considere como finalizado :).
