@@ -41,14 +41,14 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<ContentDocumen
     }
 
     @Override
-    public Content create(Content content, TenantId tenantId) {
-        var document = contentMapper.toDocument(content, tenantId);
+    public Content create(Content content) {
+        var document = contentMapper.toDocument(content);
         return contentMapper.toDomainEntity(super.save(document));
     }
 
     @Override
-    public Content update(Content.ContentId id, TenantId tenantId, Content content) {
-        var document = contentMapper.toDocument(content, tenantId);
+    public Content update(Content.ContentId id, Content content) {
+        var document = contentMapper.toDocument(content);
         var contentUpdated = findOneAndUpdate(
                 and(eq(document.getId()), eq("tenantId", document.getTenantId())),
                 combine(

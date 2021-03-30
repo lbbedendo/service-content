@@ -12,8 +12,8 @@ import java.util.Optional;
 
 public interface ContentRepository {
     Content inactivate(Content.ContentId id, TenantId tenantId);
-    Content create(Content content, TenantId tenantId);
-    Content update(Content.ContentId id, TenantId tenantId, Content content);
+    Content create(Content content);
+    Content update(Content.ContentId id, Content content);
     Optional<Content> findOne(Content.ContentId id, TenantId tenantId);
     Page<Content> findAll(Pageable pageable, ContentFilters filters, TenantId tenantId);
     Page<Content> findAll(Pageable pageable, TenantId tenantId);

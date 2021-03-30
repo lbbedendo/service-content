@@ -56,7 +56,7 @@ public class ContentQueryParams {
                 .instructorUserName(instructorUserName)
                 .text(text)
                 .visible(visible)
-                .linkModality(Set.of(linkModality))
+                .linkModality(linkModality != null ? Set.of(linkModality) : null)
                 .productionStatus(productionStatus)
                 .build();
     }

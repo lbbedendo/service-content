@@ -4,7 +4,6 @@ import io.platosedu.adapter.in.dto.request.ContentRequest;
 import io.platosedu.adapter.in.dto.response.ContentResponse;
 import io.platosedu.adapter.out.persistence.content.ContentDocument;
 import io.platosedu.domain.Content;
-import io.platosedu.domain.TenantId;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
@@ -19,11 +18,11 @@ import org.mapstruct.Mapper;
 public interface ContentMapper {
     Content toDomainEntity(ContentDocument contentDocument);
 
-    ContentDocument toDocument(Content content, TenantId tenantId);
+    ContentDocument toDocument(Content content);
 
-    Content fromContentRequest(ContentRequest contentRequest, String createdByUserId);
+    Content fromContentRequest(ContentRequest contentRequest, Boolean active, String tenantId, String createdByUserId);
 
-    Content fromContentRequest(ContentRequest contentRequest);
+    Content fromContentRequest(ContentRequest contentRequest, Boolean active, String tenantId);
 
     ContentResponse toContentResponse(Content content);
 }

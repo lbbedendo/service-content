@@ -6,8 +6,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "content API",
-                version = "0.0"
+                title = "Content API"
         )
 )
 public class Application {

@@ -26,8 +26,10 @@ public interface DocumentMapper {
     }
 
     default List<Map<String, Object>> toMapList(List<Document> documents) {
-        return documents.stream()
+        return documents != null
+                ? documents.stream()
                 .map(this::toMap)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+                : null;
     }
 }

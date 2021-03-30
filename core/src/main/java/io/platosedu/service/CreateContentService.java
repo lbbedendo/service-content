@@ -16,7 +16,7 @@ public class CreateContentService implements CreateContentUsecase {
     }
 
     @Override
-    public Content create(Content content, TenantId tenantId) {
-        return contentRepository.create(content, tenantId);
+    public Content create(Content content) {
+        return contentRepository.create(content);
     }
 }

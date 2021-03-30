@@ -3,7 +3,9 @@ package io.platosedu.adapter.in.controller;
 import com.mongodb.client.MongoClient;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.annotation.Client;
+import io.micronaut.multitenancy.tenantresolver.HttpHeaderTenantResolver;
 import io.micronaut.multitenancy.tenantresolver.TenantResolver;
+import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.platosedu.adapter.in.api.ContentApi;
 import io.platosedu.adapter.in.controller.fixtures.ContentControllerTestFixtures;
@@ -17,6 +19,7 @@ import org.bson.Document;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
@@ -26,6 +29,8 @@ import java.util.Map;
 import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @MicronautTest
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
@@ -46,6 +51,13 @@ class ContentControllerTest {
                 .getDatabase(mongoConfig.getDatabase())
                 .getCollection(ContentRepositoryAdapter.COLLECTION_NAME, ContentRepositoryAdapter.TYPE);
         mongoCollection.insertMany(ContentControllerTestFixtures.multipleContents());
+    }
+
+    @MockBean(HttpHeaderTenantResolver.class)
+    public TenantResolver tenantResolver() {
+        var mock = mock(TenantResolver.class);
+        when(mock.resolveTenantIdentifier()).thenReturn("platos");
+        return mock;
     }
 
     @Test
@@ -132,6 +144,6 @@ class ContentControllerTest {
         request.setQuestions(10);
         assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> client.save(TestHelper.mockCustomUserDetails(), request))
-                .withMessage("save.contentSaveCommand.name: must not be blank");
+                .withMessage("save.contentRequest.name: must not be blank");
     }
 }

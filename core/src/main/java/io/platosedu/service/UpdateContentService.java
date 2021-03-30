@@ -16,7 +16,7 @@ public class UpdateContentService implements UpdateContentUsecase {
     }
 
     @Override
-    public Content update(Content.ContentId id, TenantId tenantId, Content content) {
-        return contentRepository.update(id, tenantId, content);
+    public Content update(Content.ContentId id, Content content) {
+        return contentRepository.update(id, content);
     }
 }

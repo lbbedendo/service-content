@@ -69,19 +69,18 @@ public class ContentController extends MultiTenantController implements ContentA
     @Override
     public HttpResponse<ContentResponse> save(CustomUserDetails authentication,
                                               @Valid @Body ContentRequest contentRequest) {
-        var content = contentMapper.fromContentRequest(contentRequest, authentication.getId());
-        var tenantId = new TenantId(resolveTenantId());
-        return HttpResponse.created(contentMapper.toContentResponse(createContentUsecase.create(content, tenantId)));
+        var content = contentMapper.fromContentRequest(contentRequest, true, resolveTenantId(), authentication.getId());
+        return HttpResponse.created(contentMapper.toContentResponse(createContentUsecase.create(content)));
     }
 
     @Override
     public HttpResponse<ContentResponse> update(String id, @Valid @Body ContentRequest contentRequest) {
         var contentId = new Content.ContentId(id);
         var tenantId = new TenantId(resolveTenantId());
-        var content = contentMapper.fromContentRequest(contentRequest);
+        var content = contentMapper.fromContentRequest(contentRequest, true, tenantId.getValue());
         return findOneContentUsecase.findOne(contentId, tenantId)
                 .map(c -> HttpResponse.ok(contentMapper.toContentResponse(
-                        updateContentUsecase.update(contentId, tenantId, content))))
+                        updateContentUsecase.update(contentId, content))))
                 .orElseGet(HttpResponse::notFound);
     }
 

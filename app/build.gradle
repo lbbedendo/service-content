@@ -43,10 +43,9 @@ dependencies {
     implementation("io.findify:s3mock_2.11:0.2.5")
     implementation("org.mapstruct:mapstruct:$mapStructVersion")
     runtimeOnly("ch.qos.logback:logback-classic")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:mongodb")
-    testImplementation("org.testcontainers:testcontainers")
-    testAnnotationProcessor "org.mapstruct:mapstruct-processor:$mapStructVersion"
+    testAnnotationProcessor("org.mapstruct:mapstruct-processor:$mapStructVersion")
+    testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0")
+    testImplementation("org.mockito:mockito-core:2.1.0")
 }
 
 application {
