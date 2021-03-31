@@ -1,8 +1,8 @@
 package io.platosedu.usecase;
 
 import io.platosedu.domain.Content;
-import io.platosedu.domain.TenantId;
+import org.bson.types.ObjectId;
 
 public interface InactivateContentUsecase {
-    Content inactivate(Content.ContentId id, TenantId tenantId);
+    Content inactivate(ObjectId id, String tenantId);
 }

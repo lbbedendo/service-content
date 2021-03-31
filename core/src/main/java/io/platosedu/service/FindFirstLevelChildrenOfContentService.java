@@ -3,7 +3,6 @@ package io.platosedu.service;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import io.platosedu.domain.Content;
-import io.platosedu.domain.TenantId;
 import io.platosedu.port.out.ContentRepository;
 import io.platosedu.usecase.FindFirstLevelChildrenOfContentUsecase;
 import io.platosedu.usecase.dto.ContentFilters;
@@ -20,7 +19,7 @@ public class FindFirstLevelChildrenOfContentService implements FindFirstLevelChi
 
     @Override
     public Page<Content> findFirstLevelChildrenOfContent(Pageable pageable,
-                                                         TenantId tenantId,
+                                                         String tenantId,
                                                          ContentFilters contentFilters) {
         return contentRepository.findFirstLevelChildrenOfContent(pageable, tenantId, contentFilters);
     }

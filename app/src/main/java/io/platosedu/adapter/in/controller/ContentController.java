@@ -6,7 +6,6 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Header;
-import io.micronaut.multitenancy.tenantresolver.TenantResolver;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
@@ -19,8 +18,6 @@ import io.platosedu.adapter.in.dto.request.ContentRequest;
 import io.platosedu.adapter.in.dto.response.ContentResponse;
 import io.platosedu.adapter.out.persistence.mapper.ContentMapper;
 import io.platosedu.configuration.authentication.CustomUserDetails;
-import io.platosedu.domain.Content;
-import io.platosedu.domain.TenantId;
 import io.platosedu.usecase.CreateContentUsecase;
 import io.platosedu.usecase.FindAllContentUsecase;
 import io.platosedu.usecase.FindAllLevelChildrenOfContentUsecase;
@@ -29,6 +26,7 @@ import io.platosedu.usecase.FindOneContentUsecase;
 import io.platosedu.usecase.InactivateContentUsecase;
 import io.platosedu.usecase.UpdateContentUsecase;
 import io.platosedu.usecase.dto.LinkedContentResponse;
+import org.bson.types.ObjectId;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -77,9 +75,9 @@ public class ContentController implements ContentApi {
     public HttpResponse<ContentResponse> update(String id,
                                                 @Valid @Body ContentRequest contentRequest,
                                                 @Header("tenantId") String tenantId) {
-        var contentId = new Content.ContentId(id);
+        var contentId = new ObjectId(id);
         var content = contentMapper.fromContentRequest(contentRequest, true, tenantId);
-        return findOneContentUsecase.findOne(contentId, new TenantId(tenantId))
+        return findOneContentUsecase.findOne(contentId, tenantId)
                 .map(c -> HttpResponse.ok(contentMapper.toContentResponse(
                         updateContentUsecase.update(contentId, content))))
                 .orElseGet(HttpResponse::notFound);
@@ -91,14 +89,14 @@ public class ContentController implements ContentApi {
                                                        @Header("tenantId") String tenantId) {
         params.validateDateRange();
         var filters = params.toContentFilters();
-        return HttpResponse.ok(findAllContentUsecase.findAll(pageable, filters, new TenantId(tenantId))
+        return HttpResponse.ok(findAllContentUsecase.findAll(pageable, filters, tenantId)
                         .map(contentMapper::toContentResponse));
     }
 
     @Override
     public HttpResponse<ContentResponse> findOne(String id, @Header("tenantId") String tenantId) {
-        var contentId = new Content.ContentId(id);
-        return findOneContentUsecase.findOne(contentId, new TenantId(tenantId))
+        var contentId = new ObjectId(id);
+        return findOneContentUsecase.findOne(contentId, tenantId)
                 .map(content -> HttpResponse.ok(contentMapper.toContentResponse(content)))
                 .orElseGet(HttpResponse::notFound);
     }
@@ -121,11 +119,10 @@ public class ContentController implements ContentApi {
 
     @Override
     public HttpResponse<ContentResponse> delete(String id, @Header("tenantId") String tenantId) {
-        var contentId = new Content.ContentId(id);
-        var tenant = new TenantId(tenantId);
-        return findOneContentUsecase.findOne(contentId, tenant)
+        var contentId = new ObjectId(id);
+        return findOneContentUsecase.findOne(contentId, tenantId)
                 .map(content -> HttpResponse.ok(contentMapper.toContentResponse(
-                        inactivateContentUsecase.inactivate(contentId, tenant))))
+                        inactivateContentUsecase.inactivate(contentId, tenantId))))
                 .orElseGet(HttpResponse::notFound);
     }
 }

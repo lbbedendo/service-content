@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
@@ -12,16 +13,11 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class Tag {
 
-    private TagId id;
+    private ObjectId id;
     private String name;
     private Boolean active;
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private TenantId tenantId;
-
-    @Value
-    public static class TagId {
-        String value;
-    }
+    private String tenantId;
 }

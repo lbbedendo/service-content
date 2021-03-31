@@ -8,7 +8,6 @@ import com.mongodb.client.model.Sorts;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import io.platosedu.configuration.mongodb.MongoConfiguration;
-import io.platosedu.domain.TenantId;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -64,9 +63,9 @@ public abstract class MongoCrudRepository<T> {
         return getCollection().deleteOne(filter).getDeletedCount();
     }
 
-    public T inactivate(String id, TenantId tenantId) {
+    public T inactivate(ObjectId id, String tenantId) {
         return findOneAndUpdate(
-                and(eq(new ObjectId(id)), eq("tenantId", tenantId.getValue())),
+                and(eq(id), eq("tenantId", tenantId)),
                 combine(
                         set("active", false),
                         set("updatedAt", LocalDateTime.now())));
@@ -83,8 +82,8 @@ public abstract class MongoCrudRepository<T> {
                         .sort(sort).spliterator(), false);
     }
 
-    public Page<T> list(Pageable pageable, Bson filter, TenantId tenantId) {
-        var filterWithTenantId = and(eq("tenantId", tenantId.getValue()), filter);
+    public Page<T> list(Pageable pageable, Bson filter, String tenantId) {
+        var filterWithTenantId = and(eq("tenantId", tenantId), filter);
         return list(pageable, filterWithTenantId);
     }
 
@@ -106,32 +105,35 @@ public abstract class MongoCrudRepository<T> {
                 .stream(getCollection().find().spliterator(), false);
     }
 
-    public Page<T> listAll(Pageable pageable, TenantId tenantId) {
-        return list(pageable, eq("tenantId", tenantId.getValue()));
+    public Page<T> listAll(Pageable pageable, String tenantId) {
+        return list(pageable, eq("tenantId", tenantId));
     }
 
     public Page<T> listAll(Pageable pageable) {
         return list(pageable, new Document());
     }
 
-    public T findOne(Bson filter) {
-        return getCollection().find(filter).first();
-    }
-
-    public Optional<T> findOne(String id, TenantId tenantId) {
-        return Optional.ofNullable(
-                findOne(
-                        and(
-                                eq(new ObjectId(id)),
-                                eq("tenantId", tenantId.getValue()))));
-    }
-
-    public Optional<T> findOne(String id) {
-        return Optional.ofNullable(findOne(eq(new ObjectId(id))));
+    public Optional<T> findOne(Bson filter) {
+        return Optional.ofNullable(getCollection().find(filter).first());
     }
 
     public Optional<T> findOne(ObjectId id) {
-        return Optional.ofNullable(findOne(eq(id)));
+        return findOne(eq(id));
+    }
+
+    public Optional<T> findOne(ObjectId id, String tenantId) {
+        return findOne(
+                and(
+                        eq(id),
+                        eq("tenantId", tenantId)));
+    }
+
+    public Optional<T> findOne(String id) {
+        return findOne(eq(new ObjectId(id)));
+    }
+
+    public Optional<T> findOne(String id, String tenantId) {
+        return findOne(new ObjectId(id), tenantId);
     }
 
     public List<T> findAll(List<ObjectId> ids) {

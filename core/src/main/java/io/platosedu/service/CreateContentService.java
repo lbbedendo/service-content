@@ -1,7 +1,6 @@
 package io.platosedu.service;
 
 import io.platosedu.domain.Content;
-import io.platosedu.domain.TenantId;
 import io.platosedu.port.out.ContentRepository;
 import io.platosedu.usecase.CreateContentUsecase;
 

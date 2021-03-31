@@ -23,7 +23,7 @@ public class Collection {
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private TenantId tenantId;
+    private String tenantId;
 
     @Value
     public static class CollectionId {

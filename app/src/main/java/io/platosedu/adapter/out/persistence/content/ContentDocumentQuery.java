@@ -2,7 +2,6 @@ package io.platosedu.adapter.out.persistence.content;
 
 import com.mongodb.client.model.Filters;
 import io.platosedu.adapter.out.persistence.MongoCustomQuery;
-import io.platosedu.domain.TenantId;
 import io.platosedu.usecase.dto.ContentFilters;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -14,17 +13,17 @@ import java.util.stream.Stream;
 
 public final class ContentDocumentQuery implements MongoCustomQuery {
     private final ContentFilters contentFilters;
-    private final TenantId tenantId;
+    private final String tenantId;
 
     public static ContentDocumentQuery from(ContentFilters contentFilters) {
         return new ContentDocumentQuery(contentFilters, null);
     }
 
-    public static ContentDocumentQuery from(ContentFilters contentFilters, TenantId tenantId) {
+    public static ContentDocumentQuery from(ContentFilters contentFilters, String tenantId) {
         return new ContentDocumentQuery(contentFilters, tenantId);
     }
 
-    private ContentDocumentQuery(ContentFilters contentFilters, TenantId tenantId) {
+    private ContentDocumentQuery(ContentFilters contentFilters, String tenantId) {
         this.contentFilters = contentFilters;
         this.tenantId = tenantId;
     }
@@ -144,7 +143,7 @@ public final class ContentDocumentQuery implements MongoCustomQuery {
 
     public Bson getTenantIdFilter() {
         return Objects.nonNull(tenantId)
-                ? Filters.eq("tenantId", tenantId.getValue())
+                ? Filters.eq("tenantId", tenantId)
                 : null;
     }
 }

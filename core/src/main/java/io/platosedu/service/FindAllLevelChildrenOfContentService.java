@@ -1,10 +1,10 @@
 package io.platosedu.service;
 
-import io.platosedu.domain.Content;
 import io.platosedu.port.out.ContentRepository;
 import io.platosedu.usecase.FindAllLevelChildrenOfContentUsecase;
 import io.platosedu.usecase.dto.ContentFilters;
 import io.platosedu.usecase.dto.LinkedContentResponse;
+import org.bson.types.ObjectId;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -18,7 +18,7 @@ public class FindAllLevelChildrenOfContentService implements FindAllLevelChildre
     }
 
     @Override
-    public List<LinkedContentResponse> findAllLevelChildrenOfContent(Content.ContentId contentId,
+    public List<LinkedContentResponse> findAllLevelChildrenOfContent(ObjectId contentId,
                                                                      ContentFilters contentFilters) {
         return contentRepository.findAllLevelChildrenOfContent(contentId, contentFilters);
     }

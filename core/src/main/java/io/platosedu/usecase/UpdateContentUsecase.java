@@ -1,8 +1,8 @@
 package io.platosedu.usecase;
 
 import io.platosedu.domain.Content;
-import io.platosedu.domain.TenantId;
+import org.bson.types.ObjectId;
 
 public interface UpdateContentUsecase {
-    Content update(Content.ContentId id, Content content);
+    Content update(ObjectId id, Content content);
 }

@@ -2,7 +2,6 @@ package io.platosedu.usecase.dto;
 
 import io.platosedu.domain.Content;
 import io.platosedu.domain.Link;
-import io.platosedu.domain.TenantId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +30,7 @@ public class ContentFilters {
     private Set<Link.Modality.Type> linkModality;
     private Content.ProductionStatus productionStatus;
     private GraphSearchSettings graphSearchSettings;
-    private TenantId tenantId;
+    private String tenantId;
 
     @Data
     @Builder

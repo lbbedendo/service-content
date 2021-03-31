@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Value;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 @EqualsAndHashCode
 public class Content {
 
-    private ContentId id;
+    private ObjectId id;
     private Type type;
     private String name;
     private String description;
@@ -30,7 +30,7 @@ public class Content {
     private Map<String, Object> data;
     private List<Map<String, Object>> attributes;
     private String lang;
-    private List<Tag.TagId> tags;
+    private List<ObjectId> tags;
     private Integer questions;
     private String path;
     private Integer examAttempts;
@@ -47,7 +47,7 @@ public class Content {
     private Integer examTimeoutInMinutes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private TenantId tenantId;
+    private String tenantId;
 
     public enum Type {
         FOLDER,
@@ -105,11 +105,6 @@ public class Content {
         TIP,
         INTERVIEW,
         PROBLEM_SITUATION
-    }
-
-    @Value
-    public static class ContentId {
-        String value;
     }
 }
 

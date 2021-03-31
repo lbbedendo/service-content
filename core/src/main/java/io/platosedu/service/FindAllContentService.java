@@ -3,7 +3,6 @@ package io.platosedu.service;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import io.platosedu.domain.Content;
-import io.platosedu.domain.TenantId;
 import io.platosedu.port.out.ContentRepository;
 import io.platosedu.usecase.FindAllContentUsecase;
 import io.platosedu.usecase.dto.ContentFilters;
@@ -19,12 +18,12 @@ public class FindAllContentService implements FindAllContentUsecase {
     }
 
     @Override
-    public Page<Content> findAll(Pageable pageable, ContentFilters filters, TenantId tenantId) {
+    public Page<Content> findAll(Pageable pageable, ContentFilters filters, String tenantId) {
         return contentRepository.findAll(pageable, filters, tenantId);
     }
 
     @Override
-    public Page<Content> findAll(Pageable pageable, TenantId tenantId) {
+    public Page<Content> findAll(Pageable pageable, String tenantId) {
         return contentRepository.findAll(pageable, tenantId);
     }
 }

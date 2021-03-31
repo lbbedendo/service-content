@@ -1,18 +1,18 @@
 package io.platosedu.adapter.in.controller.fixtures;
 
 import io.platosedu.adapter.in.dto.request.ContentRequest;
-import io.platosedu.adapter.out.persistence.content.ContentDocument;
 import io.platosedu.domain.Content;
 import io.platosedu.domain.Link;
+import io.platosedu.domain.Tag;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class ContentControllerTestFixtures {
-    public static List<ContentDocument> multipleContents() {
+    public static List<Content> multipleContents() {
         return List.of(
-                ContentDocument.builder()
+                Content.builder()
                         .id(new ObjectId("5de029c9919cf85887af3a9b"))
                         .type(Content.Type.FOLDER)
                         .name("Gestão de Pessoas")
@@ -27,7 +27,7 @@ public class ContentControllerTestFixtures {
                         .preview(true)
                         .tenantId("platos")
                         .build(),
-                ContentDocument.builder()
+                Content.builder()
                         .id(new ObjectId("5de02a3705aeb57efc34be22"))
                         .type(Content.Type.FILE)
                         .name("file.txt")
@@ -43,7 +43,7 @@ public class ContentControllerTestFixtures {
                         .preview(false)
                         .tenantId("platos")
                         .build(),
-                ContentDocument.builder()
+                Content.builder()
                         .id(new ObjectId("5de66841766ca21238e612d5"))
                         .type(Content.Type.MARKDOWN)
                         .name("test.md")
@@ -58,7 +58,7 @@ public class ContentControllerTestFixtures {
                         .preview(false)
                         .tenantId("platos")
                         .build(),
-                ContentDocument.builder()
+                Content.builder()
                         .id(new ObjectId("5e5d65cf06701019d7b169cb"))
                         .type(Content.Type.BOOK)
                         .name("Gestão de Obras Públicas")
@@ -73,7 +73,7 @@ public class ContentControllerTestFixtures {
                         .preview(false)
                         .tenantId("kroton")
                         .build(),
-                ContentDocument.builder()
+                Content.builder()
                         .id(new ObjectId("5e6a8e8035e27bca2ca1b694"))
                         .type(Content.Type.BOOK)
                         .name("MBA em Finanças")

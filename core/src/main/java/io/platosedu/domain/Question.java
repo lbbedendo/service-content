@@ -28,7 +28,7 @@ public class Question {
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private TenantId tenantId;
+    private String tenantId;
 
     public enum Level {
         EASY(1),

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "jsr330", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface DocumentMapper {
     default Document fromMap(Map<String, Object> map) {
-        return new Document(map);
+        return map != null ? new Document(map) : null;
     }
 
     default Map<String, Object> toMap(Document document) {

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,15 +19,15 @@ import java.util.List;
 public class Link {
 
     private LinkId id;
-    private Content.ContentId contentId;
-    private Content.ContentId parentId;
+    private ObjectId contentId;
+    private ObjectId parentId;
     private List<Modality> modalities;
     private Integer contentPosition;
     private Collection.CollectionId collectionId;
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private TenantId tenantId;
+    private String tenantId;
 
     @Data
     @Builder
