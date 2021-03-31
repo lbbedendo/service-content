@@ -4,7 +4,6 @@ import io.micronaut.security.authentication.UserDetails;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Objects;
 
 public class CustomUserDetails extends UserDetails {
     private String id;

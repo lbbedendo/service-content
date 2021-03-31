@@ -3,7 +3,6 @@ package io.platosedu.adapter.in.controller.fixtures;
 import io.platosedu.adapter.in.dto.request.ContentRequest;
 import io.platosedu.domain.Content;
 import io.platosedu.domain.Link;
-import io.platosedu.domain.Tag;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;

@@ -5,8 +5,8 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import io.micronaut.http.multipart.CompletedFileUpload;
 import io.micronaut.http.multipart.FileUpload;
-import io.platosedu.port.out.FileRepository;
 import io.platosedu.domain.ContentFile;
+import io.platosedu.port.out.FileRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Singleton;
