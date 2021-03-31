@@ -8,6 +8,7 @@ import com.mongodb.client.model.Sorts;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import io.platosedu.configuration.mongodb.MongoConfiguration;
+import io.platosedu.domain.TenantId;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -25,7 +26,7 @@ import static com.mongodb.client.model.Filters.in;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 
-public abstract class MongoCrudRepository<T extends BaseMongoDocument> {
+public abstract class MongoCrudRepository<T> {
     public static final FindOneAndUpdateOptions defaultFindOneAndUpdateOptions =
             new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER);
     protected MongoClient mongoClient;
@@ -38,8 +39,6 @@ public abstract class MongoCrudRepository<T extends BaseMongoDocument> {
 
     public T save(T document) {
         var now = LocalDateTime.now();
-        document.setUpdatedAt(now);
-        document.setCreatedAt(now);
         getCollection().insertOne(document);
         return document;
     }
@@ -65,9 +64,9 @@ public abstract class MongoCrudRepository<T extends BaseMongoDocument> {
         return getCollection().deleteOne(filter).getDeletedCount();
     }
 
-    public T inactivate(String id, String tenantId) {
+    public T inactivate(String id, TenantId tenantId) {
         return findOneAndUpdate(
-                and(eq(new ObjectId(id)), eq("tenantId", tenantId)),
+                and(eq(new ObjectId(id)), eq("tenantId", tenantId.getValue())),
                 combine(
                         set("active", false),
                         set("updatedAt", LocalDateTime.now())));
@@ -84,8 +83,8 @@ public abstract class MongoCrudRepository<T extends BaseMongoDocument> {
                         .sort(sort).spliterator(), false);
     }
 
-    public Page<T> list(Pageable pageable, Bson filter, String tenantId) {
-        var filterWithTenantId = and(eq("tenantId", tenantId), filter);
+    public Page<T> list(Pageable pageable, Bson filter, TenantId tenantId) {
+        var filterWithTenantId = and(eq("tenantId", tenantId.getValue()), filter);
         return list(pageable, filterWithTenantId);
     }
 
@@ -107,8 +106,8 @@ public abstract class MongoCrudRepository<T extends BaseMongoDocument> {
                 .stream(getCollection().find().spliterator(), false);
     }
 
-    public Page<T> listAll(Pageable pageable, String tenantId) {
-        return list(pageable, eq("tenantId", tenantId));
+    public Page<T> listAll(Pageable pageable, TenantId tenantId) {
+        return list(pageable, eq("tenantId", tenantId.getValue()));
     }
 
     public Page<T> listAll(Pageable pageable) {
@@ -119,12 +118,12 @@ public abstract class MongoCrudRepository<T extends BaseMongoDocument> {
         return getCollection().find(filter).first();
     }
 
-    public Optional<T> findOne(String id, String tenantId) {
+    public Optional<T> findOne(String id, TenantId tenantId) {
         return Optional.ofNullable(
                 findOne(
                         and(
                                 eq(new ObjectId(id)),
-                                eq("tenantId", tenantId))));
+                                eq("tenantId", tenantId.getValue()))));
     }
 
     public Optional<T> findOne(String id) {

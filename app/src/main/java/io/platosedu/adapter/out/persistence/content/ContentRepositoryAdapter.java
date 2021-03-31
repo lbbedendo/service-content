@@ -37,7 +37,7 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<ContentDocumen
 
     @Override
     public Content inactivate(Content.ContentId id, TenantId tenantId) {
-        return contentMapper.toDomainEntity(super.inactivate(id.getValue(), tenantId.getValue()));
+        return contentMapper.toDomainEntity(super.inactivate(id.getValue(), tenantId));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<ContentDocumen
 
     @Override
     public Optional<Content> findOne(Content.ContentId id, TenantId tenantId) {
-        return findOne(id.getValue(), tenantId.getValue()).map(contentMapper::toDomainEntity);
+        return findOne(id.getValue(), tenantId).map(contentMapper::toDomainEntity);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<ContentDocumen
 
     @Override
     public Page<Content> findAll(Pageable pageable, TenantId tenantId) {
-        return listAll(pageable, tenantId.getValue()).map(contentMapper::toDomainEntity);
+        return listAll(pageable, tenantId).map(contentMapper::toDomainEntity);
     }
 
     @Override
