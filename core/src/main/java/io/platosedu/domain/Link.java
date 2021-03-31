@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
@@ -18,12 +17,12 @@ import java.util.List;
 @EqualsAndHashCode
 public class Link {
 
-    private LinkId id;
+    private ObjectId id;
     private ObjectId contentId;
     private ObjectId parentId;
     private List<Modality> modalities;
     private Integer contentPosition;
-    private Collection.CollectionId collectionId;
+    private ObjectId collectionId;
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -35,7 +34,7 @@ public class Link {
     @NoArgsConstructor
     @EqualsAndHashCode
     public static class Modality {
-        private ModalityId id;
+        private ObjectId id;
         private Type type;
         private Period period;
         private Double weight;
@@ -53,11 +52,6 @@ public class Link {
             SEMI_PRESENCIAL,
             INTENSIVO,
         }
-
-        @Value
-        public static class ModalityId {
-            String value;
-        }
     }
 
     @Data
@@ -66,10 +60,5 @@ public class Link {
     public static class Period {
         private Integer start;
         private Integer end;
-    }
-
-    @Value
-    public static class LinkId {
-        String value;
     }
 }

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Value;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
 @EqualsAndHashCode
 public class Question {
 
-    private QuestionId id;
+    private ObjectId id;
     private String description;
     private String explanation;
     private List<Option> options;
-    private List<Collection.CollectionId> collections;
+    private List<ObjectId> collections;
     private Type type;
     private Status status;
     private Level level;
@@ -64,11 +64,11 @@ public class Question {
     @NoArgsConstructor
     public static class Option {
 
-        private OptionId id;
+        private ObjectId id;
         private String text;
         private Boolean correct;
 
-        public Option(OptionId id, String text, Boolean correct) {
+        public Option(ObjectId id, String text, Boolean correct) {
             this.id = id;
             this.text = text;
             this.correct = correct;
@@ -78,15 +78,5 @@ public class Question {
             this.text = text;
             this.correct = correct;
         }
-
-        @Value
-        public static class OptionId {
-            String value;
-        }
-    }
-
-    @Value
-    public static class QuestionId {
-        String value;
     }
 }
