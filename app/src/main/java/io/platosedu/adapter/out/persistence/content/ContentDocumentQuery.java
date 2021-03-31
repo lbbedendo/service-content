@@ -48,7 +48,8 @@ public final class ContentDocumentQuery implements MongoCustomQuery {
                 getVisibleFilter(),
                 getParentIdFilter(),
                 getLinkModalityFilter(),
-                getProductionStatusFilter())
+                getProductionStatusFilter(),
+                getTenantIdFilter())
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }

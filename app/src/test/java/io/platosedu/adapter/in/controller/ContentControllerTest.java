@@ -1,11 +1,13 @@
 package io.platosedu.adapter.in.controller;
 
 import com.mongodb.client.MongoClient;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.platosedu.adapter.in.api.ContentApi;
 import io.platosedu.adapter.in.controller.fixtures.ContentControllerTestFixtures;
+import io.platosedu.adapter.in.dto.params.ContentQueryParams;
 import io.platosedu.adapter.in.dto.request.ContentRequest;
 import io.platosedu.adapter.out.persistence.content.ContentRepositoryAdapter;
 import io.platosedu.configuration.mongodb.MongoConfiguration;
@@ -130,5 +132,43 @@ class ContentControllerTest {
         assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> client.save(TestHelper.mockCustomUserDetails(), request, "platos"))
                 .withMessage("save.contentRequest.name: must not be blank");
+    }
+
+    @Test
+    public void save_exception_whenTypeIsEmpty() {
+        var request = new ContentRequest();
+        request.setName("Gestão de Pessoas");
+        request.setRoot(true);
+        request.setLang("PT-BR");
+        request.setQuestions(10);
+        assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> client.save(TestHelper.mockCustomUserDetails(), request, "platos"))
+                .withMessage("save.contentRequest.type: must not be null");
+    }
+
+    @Test
+    public void findOne_content_whenSearchingForOneSpecificContent() {
+        var response = client.findOne("5de029c9919cf85887af3a9b", "platos");
+        assertThat(response.code()).isEqualTo(HttpStatus.OK.getCode());
+        var body = response.body();
+        assertThat(body).isNotNull();
+        assertThat(body.getId().toHexString()).isEqualTo("5de029c9919cf85887af3a9b");
+    }
+
+    @Test
+    public void findOne_notFound_whenTenantIdDoesNotMatchTenantIdOfDocument() {
+        var response = client.findOne("5e5d65cf06701019d7b169cb", "platos");
+        assertThat(response.code()).isEqualTo(HttpStatus.NOT_FOUND.getCode());
+    }
+
+    @Test
+    public void findAll_notEmpty_whenSearchingAllContentsWithNoFilter() {
+        var response = client.findAll(defaultPage(), ContentQueryParams.empty(), "platos");
+        assertThat(response.code()).isEqualTo(HttpStatus.OK.getCode());
+        assertThat(response.body()).isNotEmpty();
+    }
+
+    private Pageable defaultPage() {
+        return Pageable.from(0, 10);
     }
 }
