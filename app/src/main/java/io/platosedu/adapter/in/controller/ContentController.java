@@ -5,6 +5,7 @@ import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Header;
 import io.micronaut.multitenancy.tenantresolver.TenantResolver;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
@@ -35,7 +36,7 @@ import java.util.List;
 @Controller("/content")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @ExecuteOn(TaskExecutors.IO)
-public class ContentController extends MultiTenantController implements ContentApi {
+public class ContentController implements ContentApi {
     private final CreateContentUsecase createContentUsecase;
     private final UpdateContentUsecase updateContentUsecase;
     private final FindOneContentUsecase findOneContentUsecase;
@@ -46,8 +47,7 @@ public class ContentController extends MultiTenantController implements ContentA
     private final ContentMapper contentMapper;
 
 
-    public ContentController(TenantResolver tenantResolver,
-                             CreateContentUsecase createContentUsecase,
+    public ContentController(CreateContentUsecase createContentUsecase,
                              UpdateContentUsecase updateContentUsecase,
                              FindOneContentUsecase findOneContentUsecase,
                              FindAllContentUsecase findAllContentUsecase,
@@ -55,7 +55,6 @@ public class ContentController extends MultiTenantController implements ContentA
                              FindAllLevelChildrenOfContentUsecase findAllLevelChildrenOfContentUsecase,
                              InactivateContentUsecase inactivateContentUsecase,
                              ContentMapper contentMapper) {
-        super(tenantResolver);
         this.createContentUsecase = createContentUsecase;
         this.updateContentUsecase = updateContentUsecase;
         this.findOneContentUsecase = findOneContentUsecase;
@@ -68,36 +67,38 @@ public class ContentController extends MultiTenantController implements ContentA
 
     @Override
     public HttpResponse<ContentResponse> save(CustomUserDetails authentication,
-                                              @Valid @Body ContentRequest contentRequest) {
-        var content = contentMapper.fromContentRequest(contentRequest, true, resolveTenantId(), authentication.getId());
+                                              @Valid @Body ContentRequest contentRequest,
+                                              @Header("tenantId") String tenantId) {
+        var content = contentMapper.fromContentRequest(contentRequest, true, tenantId, authentication.getId());
         return HttpResponse.created(contentMapper.toContentResponse(createContentUsecase.create(content)));
     }
 
     @Override
-    public HttpResponse<ContentResponse> update(String id, @Valid @Body ContentRequest contentRequest) {
+    public HttpResponse<ContentResponse> update(String id,
+                                                @Valid @Body ContentRequest contentRequest,
+                                                @Header("tenantId") String tenantId) {
         var contentId = new Content.ContentId(id);
-        var tenantId = new TenantId(resolveTenantId());
-        var content = contentMapper.fromContentRequest(contentRequest, true, tenantId.getValue());
-        return findOneContentUsecase.findOne(contentId, tenantId)
+        var content = contentMapper.fromContentRequest(contentRequest, true, tenantId);
+        return findOneContentUsecase.findOne(contentId, new TenantId(tenantId))
                 .map(c -> HttpResponse.ok(contentMapper.toContentResponse(
                         updateContentUsecase.update(contentId, content))))
                 .orElseGet(HttpResponse::notFound);
     }
 
     @Override
-    public HttpResponse<Page<ContentResponse>> findAll(Pageable pageable, ContentQueryParams params) {
+    public HttpResponse<Page<ContentResponse>> findAll(Pageable pageable,
+                                                       ContentQueryParams params,
+                                                       @Header("tenantId") String tenantId) {
         params.validateDateRange();
-        var tenantId = new TenantId(resolveTenantId());
         var filters = params.toContentFilters();
-        return HttpResponse.ok(findAllContentUsecase.findAll(pageable, filters, tenantId)
+        return HttpResponse.ok(findAllContentUsecase.findAll(pageable, filters, new TenantId(tenantId))
                         .map(contentMapper::toContentResponse));
     }
 
     @Override
-    public HttpResponse<ContentResponse> findOne(String id) {
+    public HttpResponse<ContentResponse> findOne(String id, @Header("tenantId") String tenantId) {
         var contentId = new Content.ContentId(id);
-        var tenantId = new TenantId(id);
-        return findOneContentUsecase.findOne(contentId, tenantId)
+        return findOneContentUsecase.findOne(contentId, new TenantId(tenantId))
                 .map(content -> HttpResponse.ok(contentMapper.toContentResponse(content)))
                 .orElseGet(HttpResponse::notFound);
     }
@@ -105,23 +106,26 @@ public class ContentController extends MultiTenantController implements ContentA
     @Override
     public HttpResponse<Page<ContentResponse>> findFirstLevelChildrenOfContent(Pageable pageable,
                                                                                String contentId,
-                                                                               ContentChildrenQueryParams params) {
+                                                                               ContentChildrenQueryParams params,
+                                                                               @Header("tenantId") String tenantId) {
         throw new UnsupportedOperationException("Not implemented!");
     }
+
 
     @Override
     public HttpResponse<List<LinkedContentResponse>> findAllLevelChildrenOfContent(String contentId,
-                                                                                   ContentAllLevelChildrenQueryParams params) {
+                                                                                   ContentAllLevelChildrenQueryParams params,
+                                                                                   @Header("tenantId") String tenantId) {
         throw new UnsupportedOperationException("Not implemented!");
     }
 
     @Override
-    public HttpResponse<ContentResponse> delete(String id) {
+    public HttpResponse<ContentResponse> delete(String id, @Header("tenantId") String tenantId) {
         var contentId = new Content.ContentId(id);
-        var tenantId = new TenantId(resolveTenantId());
-        return findOneContentUsecase.findOne(contentId, tenantId)
+        var tenant = new TenantId(tenantId);
+        return findOneContentUsecase.findOne(contentId, tenant)
                 .map(content -> HttpResponse.ok(contentMapper.toContentResponse(
-                        inactivateContentUsecase.inactivate(contentId, tenantId))))
+                        inactivateContentUsecase.inactivate(contentId, tenant))))
                 .orElseGet(HttpResponse::notFound);
     }
 }
