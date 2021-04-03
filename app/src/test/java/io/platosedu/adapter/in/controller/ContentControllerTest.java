@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,7 +57,7 @@ class ContentControllerTest {
         request.setRoot(true);
         request.setLang("PT-BR");
         request.setQuestions(10);
-        request.setTags(List.of("5e31f6e162ad720bb595253d"));
+        request.setTags(List.of("90ead1f6-ff8c-43f1-99f6-4215969dde2a"));
         request.setPath("/path/to/file");
         request.setExamAttempts(2);
         request.setVisible(true);
@@ -91,7 +92,7 @@ class ContentControllerTest {
         assertThat(body.getRoot()).isEqualTo(request.getRoot());
         assertThat(body.getActive()).isTrue();
         assertThat(body.getLang()).isEqualTo(request.getLang());
-        assertThat(body.getTags()).containsExactly("5e31f6e162ad720bb595253d");
+        assertThat(body.getTags()).containsExactly("90ead1f6-ff8c-43f1-99f6-4215969dde2a");
         assertThat(body.getQuestions()).isEqualTo(request.getQuestions());
         assertThat(body.getPath()).isEqualTo(request.getPath());
         assertThat(body.getCreatedAt()).isNotNull();
@@ -148,16 +149,16 @@ class ContentControllerTest {
 
     @Test
     public void findOne_content_whenSearchingForOneSpecificContent() {
-        var response = client.findOne("5de029c9919cf85887af3a9b", "platos");
+        var response = client.findOne(UUID.fromString("c8f5959e-21ec-4f07-ae29-e4dba6819cb5"), "platos");
         assertThat(response.code()).isEqualTo(HttpStatus.OK.getCode());
         var body = response.body();
         assertThat(body).isNotNull();
-        assertThat(body.getId().toHexString()).isEqualTo("5de029c9919cf85887af3a9b");
+        assertThat(body.getId().toString()).isEqualTo("c8f5959e-21ec-4f07-ae29-e4dba6819cb5");
     }
 
     @Test
     public void findOne_notFound_whenTenantIdDoesNotMatchTenantIdOfDocument() {
-        var response = client.findOne("5e5d65cf06701019d7b169cb", "platos");
+        var response = client.findOne(UUID.fromString("ee57f7c9-26a0-4b50-8558-ed5a47da3213"), "platos");
         assertThat(response.code()).isEqualTo(HttpStatus.NOT_FOUND.getCode());
     }
 

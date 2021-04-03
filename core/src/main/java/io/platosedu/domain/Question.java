@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -17,11 +17,11 @@ import java.util.List;
 @EqualsAndHashCode
 public class Question {
 
-    private ObjectId id;
+    private UUID id;
     private String description;
     private String explanation;
     private List<Option> options;
-    private List<ObjectId> collections;
+    private List<UUID> collections;
     private Type type;
     private Status status;
     private Level level;
@@ -64,11 +64,11 @@ public class Question {
     @NoArgsConstructor
     public static class Option {
 
-        private ObjectId id;
+        private UUID id;
         private String text;
         private Boolean correct;
 
-        public Option(ObjectId id, String text, Boolean correct) {
+        public Option(UUID id, String text, Boolean correct) {
             this.id = id;
             this.text = text;
             this.correct = correct;

@@ -7,6 +7,7 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Header;
+import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Put;
 import io.platosedu.adapter.in.dto.params.ContentAllLevelChildrenQueryParams;
@@ -19,6 +20,7 @@ import io.platosedu.usecase.dto.LinkedContentResponse;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 public interface ContentApi {
     @Post
@@ -27,7 +29,7 @@ public interface ContentApi {
                                        @Header("tenantId") String tenantId);
 
     @Put("/{id}")
-    HttpResponse<ContentResponse> update(String id,
+    HttpResponse<ContentResponse> update(@PathVariable UUID id,
                                          @Valid @Body ContentRequest contentRequest,
                                          @Header("tenantId") String tenantId);
 
@@ -37,19 +39,19 @@ public interface ContentApi {
                                                 @Header("tenantId") String tenantId);
 
     @Get("/{id}")
-    HttpResponse<ContentResponse> findOne(String id, @Header("tenantId") String tenantId);
+    HttpResponse<ContentResponse> findOne(@PathVariable UUID id, @Header("tenantId") String tenantId);
 
     @Get("/{contentId}/children{?params*}")
     HttpResponse<Page<ContentResponse>> findFirstLevelChildrenOfContent(Pageable pageable,
-                                                                        String contentId,
+                                                                        @PathVariable UUID contentId,
                                                                         ContentChildrenQueryParams params,
                                                                         @Header("tenantId") String tenantId);
 
     @Get("/{contentId}/all-children{?params*}")
-    HttpResponse<List<LinkedContentResponse>> findAllLevelChildrenOfContent(String contentId,
+    HttpResponse<List<LinkedContentResponse>> findAllLevelChildrenOfContent(@PathVariable UUID contentId,
                                                                             ContentAllLevelChildrenQueryParams params,
                                                                             @Header("tenantId") String tenantId);
 
     @Delete("/{id}")
-    HttpResponse<ContentResponse> delete(String id, @Header("tenantId") String tenantId);
+    HttpResponse<ContentResponse> delete(@PathVariable UUID id, @Header("tenantId") String tenantId);
 }

@@ -27,6 +27,7 @@ mongodb:
   collection: ${MONGO_COLLECTION:content}
   options:
     readConcern: majority
+  uuid-representation: STANDARD
 jackson:
   serialization:
     writeDatesAsTimestamps: false

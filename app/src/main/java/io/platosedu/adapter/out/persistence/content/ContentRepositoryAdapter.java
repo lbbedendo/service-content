@@ -9,12 +9,12 @@ import io.platosedu.domain.Content;
 import io.platosedu.port.out.ContentRepository;
 import io.platosedu.usecase.dto.ContentFilters;
 import io.platosedu.usecase.dto.LinkedContentResponse;
-import org.bson.types.ObjectId;
 
 import javax.inject.Singleton;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
@@ -22,7 +22,7 @@ import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 
 @Singleton
-public class ContentRepositoryAdapter extends MongoCrudRepository<Content> implements ContentRepository {
+public class ContentRepositoryAdapter extends MongoCrudRepository<Content, UUID> implements ContentRepository {
     public static final String COLLECTION_NAME = "content";
     public static final Class<Content> TYPE = Content.class;
 
@@ -32,7 +32,7 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<Content> imple
     }
 
     @Override
-    public Content inactivate(ObjectId id, String tenantId) {
+    public Content inactivate(UUID id, String tenantId) {
         return super.inactivate(id, tenantId);
     }
 
@@ -44,7 +44,7 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<Content> imple
     }
 
     @Override
-    public Content update(ObjectId id, Content content) {
+    public Content update(UUID id, Content content) {
         return findOneAndUpdate(
                 and(eq(content.getId()), eq("tenantId", content.getTenantId())),
                 combine(
@@ -72,7 +72,7 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<Content> imple
     }
 
     @Override
-    public Optional<Content> findOne(ObjectId id, String tenantId) {
+    public Optional<Content> findOne(UUID id, String tenantId) {
         return super.findOne(id, tenantId);
     }
 
@@ -93,7 +93,7 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<Content> imple
     }
 
     @Override
-    public List<LinkedContentResponse> findAllLevelChildrenOfContent(ObjectId contentId,
+    public List<LinkedContentResponse> findAllLevelChildrenOfContent(UUID contentId,
                                                                      ContentFilters filters) {
         throw new UnsupportedOperationException("Not implemented!");
     }

@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class AttributeType {
 
-    private ObjectId id;
+    private UUID id;
     private String name;
     private String slug;
     private String type;

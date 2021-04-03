@@ -5,12 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 @EqualsAndHashCode
 public class Content {
 
-    private ObjectId id;
+    private UUID id;
     private Type type;
     private String name;
     private String description;
@@ -30,7 +30,7 @@ public class Content {
     private Map<String, Object> data;
     private List<Map<String, Object>> attributes;
     private String lang;
-    private List<ObjectId> tags;
+    private List<UUID> tags;
     private Integer questions;
     private String path;
     private Integer examAttempts;
@@ -93,7 +93,7 @@ public class Content {
         LAYOUT,
         REVIEW,
         LAYOUT_ADJUSTMENT,
-        DONE;
+        DONE
 
     }
 

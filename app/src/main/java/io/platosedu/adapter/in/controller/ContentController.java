@@ -6,6 +6,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Header;
+import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
@@ -26,10 +27,10 @@ import io.platosedu.usecase.FindOneContentUsecase;
 import io.platosedu.usecase.InactivateContentUsecase;
 import io.platosedu.usecase.UpdateContentUsecase;
 import io.platosedu.usecase.dto.LinkedContentResponse;
-import org.bson.types.ObjectId;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @Controller("/content")
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -72,14 +73,13 @@ public class ContentController implements ContentApi {
     }
 
     @Override
-    public HttpResponse<ContentResponse> update(String id,
+    public HttpResponse<ContentResponse> update(@PathVariable UUID id,
                                                 @Valid @Body ContentRequest contentRequest,
                                                 @Header("tenantId") String tenantId) {
-        var contentId = new ObjectId(id);
         var content = contentMapper.fromContentRequest(contentRequest, true, tenantId);
-        return findOneContentUsecase.findOne(contentId, tenantId)
+        return findOneContentUsecase.findOne(id, tenantId)
                 .map(c -> HttpResponse.ok(contentMapper.toContentResponse(
-                        updateContentUsecase.update(contentId, content))))
+                        updateContentUsecase.update(id, content))))
                 .orElseGet(HttpResponse::notFound);
     }
 
@@ -94,16 +94,15 @@ public class ContentController implements ContentApi {
     }
 
     @Override
-    public HttpResponse<ContentResponse> findOne(String id, @Header("tenantId") String tenantId) {
-        var contentId = new ObjectId(id);
-        return findOneContentUsecase.findOne(contentId, tenantId)
+    public HttpResponse<ContentResponse> findOne(@PathVariable UUID id, @Header("tenantId") String tenantId) {
+        return findOneContentUsecase.findOne(id, tenantId)
                 .map(content -> HttpResponse.ok(contentMapper.toContentResponse(content)))
                 .orElseGet(HttpResponse::notFound);
     }
 
     @Override
     public HttpResponse<Page<ContentResponse>> findFirstLevelChildrenOfContent(Pageable pageable,
-                                                                               String contentId,
+                                                                               @PathVariable UUID contentId,
                                                                                ContentChildrenQueryParams params,
                                                                                @Header("tenantId") String tenantId) {
         throw new UnsupportedOperationException("Not implemented!");
@@ -111,18 +110,17 @@ public class ContentController implements ContentApi {
 
 
     @Override
-    public HttpResponse<List<LinkedContentResponse>> findAllLevelChildrenOfContent(String contentId,
+    public HttpResponse<List<LinkedContentResponse>> findAllLevelChildrenOfContent(@PathVariable UUID contentId,
                                                                                    ContentAllLevelChildrenQueryParams params,
                                                                                    @Header("tenantId") String tenantId) {
         throw new UnsupportedOperationException("Not implemented!");
     }
 
     @Override
-    public HttpResponse<ContentResponse> delete(String id, @Header("tenantId") String tenantId) {
-        var contentId = new ObjectId(id);
-        return findOneContentUsecase.findOne(contentId, tenantId)
+    public HttpResponse<ContentResponse> delete(@PathVariable UUID id, @Header("tenantId") String tenantId) {
+        return findOneContentUsecase.findOne(id, tenantId)
                 .map(content -> HttpResponse.ok(contentMapper.toContentResponse(
-                        inactivateContentUsecase.inactivate(contentId, tenantId))))
+                        inactivateContentUsecase.inactivate(id, tenantId))))
                 .orElseGet(HttpResponse::notFound);
     }
 }

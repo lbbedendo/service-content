@@ -3,16 +3,16 @@ package io.platosedu.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Tag {
 
-    private ObjectId id;
+    private UUID id;
     private String name;
     private Boolean active;
     private String createdByUserId;

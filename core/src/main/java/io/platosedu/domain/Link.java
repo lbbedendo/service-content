@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -17,12 +17,12 @@ import java.util.List;
 @EqualsAndHashCode
 public class Link {
 
-    private ObjectId id;
-    private ObjectId contentId;
-    private ObjectId parentId;
+    private UUID id;
+    private UUID contentId;
+    private UUID parentId;
     private List<Modality> modalities;
     private Integer contentPosition;
-    private ObjectId collectionId;
+    private UUID collectionId;
     private String createdByUserId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -34,7 +34,7 @@ public class Link {
     @NoArgsConstructor
     @EqualsAndHashCode
     public static class Modality {
-        private ObjectId id;
+        private UUID id;
         private Type type;
         private Period period;
         private Double weight;

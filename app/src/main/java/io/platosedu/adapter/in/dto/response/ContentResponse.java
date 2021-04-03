@@ -6,15 +6,15 @@ import io.platosedu.domain.Content;
 import io.platosedu.domain.Link;
 import lombok.Data;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class ContentResponse {
     @JsonSerialize(using = ToStringSerializer.class)
-    private ObjectId id;
+    private UUID id;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Content.Type type;

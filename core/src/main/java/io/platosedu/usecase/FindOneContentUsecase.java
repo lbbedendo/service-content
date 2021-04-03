@@ -1,10 +1,10 @@
 package io.platosedu.usecase;
 
 import io.platosedu.domain.Content;
-import org.bson.types.ObjectId;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface FindOneContentUsecase {
-    Optional<Content> findOne(ObjectId id, String tenantId);
+    Optional<Content> findOne(UUID id, String tenantId);
 }

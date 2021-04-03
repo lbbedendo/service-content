@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(
         componentModel = "jsr330",
-        uses = {ObjectIdMapper.class,
+        uses = {UUIDMapper.class,
                 DocumentMapper.class},
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ContentMapper {

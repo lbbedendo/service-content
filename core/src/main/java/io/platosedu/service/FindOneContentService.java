@@ -3,10 +3,10 @@ package io.platosedu.service;
 import io.platosedu.domain.Content;
 import io.platosedu.port.out.ContentRepository;
 import io.platosedu.usecase.FindOneContentUsecase;
-import org.bson.types.ObjectId;
 
 import javax.inject.Singleton;
 import java.util.Optional;
+import java.util.UUID;
 
 @Singleton
 public class FindOneContentService implements FindOneContentUsecase {
@@ -17,7 +17,7 @@ public class FindOneContentService implements FindOneContentUsecase {
     }
 
     @Override
-    public Optional<Content> findOne(ObjectId id, String tenantId) {
+    public Optional<Content> findOne(UUID id, String tenantId) {
         return contentRepository.findOne(id, tenantId);
     }
 }

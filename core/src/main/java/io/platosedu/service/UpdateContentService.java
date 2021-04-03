@@ -3,9 +3,9 @@ package io.platosedu.service;
 import io.platosedu.domain.Content;
 import io.platosedu.port.out.ContentRepository;
 import io.platosedu.usecase.UpdateContentUsecase;
-import org.bson.types.ObjectId;
 
 import javax.inject.Singleton;
+import java.util.UUID;
 
 @Singleton
 public class UpdateContentService implements UpdateContentUsecase {
@@ -16,7 +16,7 @@ public class UpdateContentService implements UpdateContentUsecase {
     }
 
     @Override
-    public Content update(ObjectId id, Content content) {
+    public Content update(UUID id, Content content) {
         return contentRepository.update(id, content);
     }
 }

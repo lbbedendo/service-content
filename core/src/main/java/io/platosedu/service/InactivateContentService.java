@@ -3,9 +3,9 @@ package io.platosedu.service;
 import io.platosedu.domain.Content;
 import io.platosedu.port.out.ContentRepository;
 import io.platosedu.usecase.InactivateContentUsecase;
-import org.bson.types.ObjectId;
 
 import javax.inject.Singleton;
+import java.util.UUID;
 
 @Singleton
 public class InactivateContentService implements InactivateContentUsecase {
@@ -16,7 +16,7 @@ public class InactivateContentService implements InactivateContentUsecase {
     }
 
     @Override
-    public Content inactivate(ObjectId id, String tenantId) {
+    public Content inactivate(UUID id, String tenantId) {
         return contentRepository.inactivate(id, tenantId);
     }
 }

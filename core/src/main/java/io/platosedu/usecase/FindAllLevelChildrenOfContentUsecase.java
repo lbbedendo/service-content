@@ -2,11 +2,11 @@ package io.platosedu.usecase;
 
 import io.platosedu.usecase.dto.ContentFilters;
 import io.platosedu.usecase.dto.LinkedContentResponse;
-import org.bson.types.ObjectId;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface FindAllLevelChildrenOfContentUsecase {
-    List<LinkedContentResponse> findAllLevelChildrenOfContent(ObjectId contentId,
+    List<LinkedContentResponse> findAllLevelChildrenOfContent(UUID contentId,
                                                               ContentFilters contentFilters);
 }

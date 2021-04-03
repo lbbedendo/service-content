@@ -10,7 +10,6 @@ import io.micronaut.data.model.Pageable;
 import io.platosedu.configuration.mongodb.MongoConfiguration;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +24,7 @@ import static com.mongodb.client.model.Filters.in;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 
-public abstract class MongoCrudRepository<T> {
+public abstract class MongoCrudRepository<T, ID> {
     public static final FindOneAndUpdateOptions defaultFindOneAndUpdateOptions =
             new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER);
     protected MongoClient mongoClient;
@@ -37,7 +36,6 @@ public abstract class MongoCrudRepository<T> {
     }
 
     public T save(T document) {
-        var now = LocalDateTime.now();
         getCollection().insertOne(document);
         return document;
     }
@@ -63,7 +61,7 @@ public abstract class MongoCrudRepository<T> {
         return getCollection().deleteOne(filter).getDeletedCount();
     }
 
-    public T inactivate(ObjectId id, String tenantId) {
+    public T inactivate(ID id, String tenantId) {
         return findOneAndUpdate(
                 and(eq(id), eq("tenantId", tenantId)),
                 combine(
@@ -117,26 +115,18 @@ public abstract class MongoCrudRepository<T> {
         return Optional.ofNullable(getCollection().find(filter).first());
     }
 
-    public Optional<T> findOne(ObjectId id) {
+    public Optional<T> findOne(ID id) {
         return findOne(eq(id));
     }
 
-    public Optional<T> findOne(ObjectId id, String tenantId) {
+    public Optional<T> findOne(ID id, String tenantId) {
         return findOne(
                 and(
                         eq(id),
                         eq("tenantId", tenantId)));
     }
 
-    public Optional<T> findOne(String id) {
-        return findOne(eq(new ObjectId(id)));
-    }
-
-    public Optional<T> findOne(String id, String tenantId) {
-        return findOne(new ObjectId(id), tenantId);
-    }
-
-    public List<T> findAll(List<ObjectId> ids) {
+    public List<T> findAll(List<ID> ids) {
         return StreamSupport
                 .stream(getCollection().find(in("_id", ids)).spliterator(), false)
                 .collect(Collectors.toList());

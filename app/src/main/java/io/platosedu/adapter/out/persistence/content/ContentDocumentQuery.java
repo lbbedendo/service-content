@@ -4,10 +4,10 @@ import com.mongodb.client.model.Filters;
 import io.platosedu.adapter.out.persistence.MongoCustomQuery;
 import io.platosedu.usecase.dto.ContentFilters;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,7 +62,7 @@ public final class ContentDocumentQuery implements MongoCustomQuery {
     public Bson getTagsFilter() {
         return Objects.nonNull(contentFilters.getTags()) && !contentFilters.getTags().isEmpty()
                 ? Filters.in("tags", contentFilters.getTags()
-                .stream().map(ObjectId::new)
+                .stream().map(UUID::fromString)
                 .collect(Collectors.toList()))
                 : null;
     }
@@ -125,7 +125,7 @@ public final class ContentDocumentQuery implements MongoCustomQuery {
 
     public Bson getParentIdFilter() {
         return Objects.nonNull(contentFilters.getParentId())
-                ? Filters.eq("link.parentId", new ObjectId(contentFilters.getParentId()))
+                ? Filters.eq("link.parentId", UUID.fromString(contentFilters.getParentId()))
                 : null;
     }
 
