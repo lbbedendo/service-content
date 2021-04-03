@@ -38,6 +38,7 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<Content, UUID>
 
     @Override
     public Content create(Content content) {
+        content.setId(UUID.randomUUID());
         content.setCreatedAt(LocalDateTime.now());
         content.setUpdatedAt(LocalDateTime.now());
         return super.save(content);
