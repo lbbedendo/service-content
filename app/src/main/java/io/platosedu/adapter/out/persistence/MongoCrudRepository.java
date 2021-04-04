@@ -66,7 +66,8 @@ public abstract class MongoCrudRepository<T, ID> {
                 and(eq(id), eq("tenantId", tenantId)),
                 combine(
                         set("active", false),
-                        set("updatedAt", LocalDateTime.now())));
+                        set("updatedAt", LocalDateTime.now()),
+                        set("deletedAt", LocalDateTime.now())));
     }
 
     public Stream<T> list(Bson filter) {

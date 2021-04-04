@@ -47,7 +47,7 @@ public class ContentRepositoryAdapter extends MongoCrudRepository<Content, UUID>
     @Override
     public Content update(UUID id, Content content) {
         return findOneAndUpdate(
-                and(eq(content.getId()), eq("tenantId", content.getTenantId())),
+                and(eq(id), eq("tenantId", content.getTenantId())),
                 combine(
                         set("type", content.getType()),
                         set("name", content.getName()),
