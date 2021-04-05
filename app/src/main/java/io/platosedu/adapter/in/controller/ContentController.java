@@ -20,10 +20,7 @@ import io.platosedu.adapter.in.dto.response.ContentResponse;
 import io.platosedu.adapter.out.persistence.mapper.ContentMapper;
 import io.platosedu.configuration.authentication.CustomUserDetails;
 import io.platosedu.usecase.CreateContentUsecase;
-import io.platosedu.usecase.FindAllContentUsecase;
-import io.platosedu.usecase.FindAllLevelChildrenOfContentUsecase;
-import io.platosedu.usecase.FindFirstLevelChildrenOfContentUsecase;
-import io.platosedu.usecase.FindOneContentUsecase;
+import io.platosedu.usecase.FindContentUsecase;
 import io.platosedu.usecase.InactivateContentUsecase;
 import io.platosedu.usecase.UpdateContentUsecase;
 import io.platosedu.usecase.dto.LinkedContentResponse;
@@ -38,28 +35,19 @@ import java.util.UUID;
 public class ContentController implements ContentApi {
     private final CreateContentUsecase createContentUsecase;
     private final UpdateContentUsecase updateContentUsecase;
-    private final FindOneContentUsecase findOneContentUsecase;
-    private final FindAllContentUsecase findAllContentUsecase;
-    private final FindFirstLevelChildrenOfContentUsecase findFirstLevelChildrenOfContentUsecase;
-    private final FindAllLevelChildrenOfContentUsecase findAllLevelChildrenOfContentUsecase;
+    private final FindContentUsecase findContentUsecase;
     private final InactivateContentUsecase inactivateContentUsecase;
     private final ContentMapper contentMapper;
 
 
     public ContentController(CreateContentUsecase createContentUsecase,
                              UpdateContentUsecase updateContentUsecase,
-                             FindOneContentUsecase findOneContentUsecase,
-                             FindAllContentUsecase findAllContentUsecase,
-                             FindFirstLevelChildrenOfContentUsecase findFirstLevelChildrenOfContentUsecase,
-                             FindAllLevelChildrenOfContentUsecase findAllLevelChildrenOfContentUsecase,
+                             FindContentUsecase findContentUsecase,
                              InactivateContentUsecase inactivateContentUsecase,
                              ContentMapper contentMapper) {
         this.createContentUsecase = createContentUsecase;
         this.updateContentUsecase = updateContentUsecase;
-        this.findOneContentUsecase = findOneContentUsecase;
-        this.findAllContentUsecase = findAllContentUsecase;
-        this.findFirstLevelChildrenOfContentUsecase = findFirstLevelChildrenOfContentUsecase;
-        this.findAllLevelChildrenOfContentUsecase = findAllLevelChildrenOfContentUsecase;
+        this.findContentUsecase = findContentUsecase;
         this.inactivateContentUsecase = inactivateContentUsecase;
         this.contentMapper = contentMapper;
     }
@@ -77,7 +65,7 @@ public class ContentController implements ContentApi {
                                                 @Valid @Body ContentRequest contentRequest,
                                                 @Header("tenantId") String tenantId) {
         var content = contentMapper.fromContentRequest(contentRequest, true, tenantId);
-        return findOneContentUsecase.findOne(id, tenantId)
+        return findContentUsecase.findOne(id, tenantId)
                 .map(c -> HttpResponse.ok(contentMapper.toContentResponse(
                         updateContentUsecase.update(id, content))))
                 .orElseGet(HttpResponse::notFound);
@@ -89,13 +77,13 @@ public class ContentController implements ContentApi {
                                                        @Header("tenantId") String tenantId) {
         params.validateDateRange();
         var filters = params.toContentFilters();
-        return HttpResponse.ok(findAllContentUsecase.findAll(pageable, filters, tenantId)
+        return HttpResponse.ok(findContentUsecase.findAll(pageable, filters, tenantId)
                         .map(contentMapper::toContentResponse));
     }
 
     @Override
     public HttpResponse<ContentResponse> findOne(@PathVariable UUID id, @Header("tenantId") String tenantId) {
-        return findOneContentUsecase.findOne(id, tenantId)
+        return findContentUsecase.findOne(id, tenantId)
                 .map(content -> HttpResponse.ok(contentMapper.toContentResponse(content)))
                 .orElseGet(HttpResponse::notFound);
     }
@@ -118,7 +106,7 @@ public class ContentController implements ContentApi {
 
     @Override
     public HttpResponse<ContentResponse> delete(@PathVariable UUID id, @Header("tenantId") String tenantId) {
-        return findOneContentUsecase.findOne(id, tenantId)
+        return findContentUsecase.findOne(id, tenantId)
                 .map(content -> HttpResponse.ok(contentMapper.toContentResponse(
                         inactivateContentUsecase.inactivate(id, tenantId))))
                 .orElseGet(HttpResponse::notFound);
