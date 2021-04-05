@@ -4,6 +4,8 @@ import io.platosedu.domain.Content;
 
 import java.util.UUID;
 
-public interface UpdateContentUsecase {
+public interface SaveContentUsecase {
+    Content create(Content content);
+    Content inactivate(UUID id, String tenantId);
     Content update(UUID id, Content content);
 }

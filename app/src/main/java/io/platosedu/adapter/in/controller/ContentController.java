@@ -19,10 +19,8 @@ import io.platosedu.adapter.in.dto.request.ContentRequest;
 import io.platosedu.adapter.in.dto.response.ContentResponse;
 import io.platosedu.adapter.out.persistence.mapper.ContentMapper;
 import io.platosedu.configuration.authentication.CustomUserDetails;
-import io.platosedu.usecase.CreateContentUsecase;
 import io.platosedu.usecase.FindContentUsecase;
-import io.platosedu.usecase.InactivateContentUsecase;
-import io.platosedu.usecase.UpdateContentUsecase;
+import io.platosedu.usecase.SaveContentUsecase;
 import io.platosedu.usecase.dto.LinkedContentResponse;
 
 import javax.validation.Valid;
@@ -33,22 +31,16 @@ import java.util.UUID;
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @ExecuteOn(TaskExecutors.IO)
 public class ContentController implements ContentApi {
-    private final CreateContentUsecase createContentUsecase;
-    private final UpdateContentUsecase updateContentUsecase;
+    private final SaveContentUsecase saveContentUsecase;
     private final FindContentUsecase findContentUsecase;
-    private final InactivateContentUsecase inactivateContentUsecase;
     private final ContentMapper contentMapper;
 
 
-    public ContentController(CreateContentUsecase createContentUsecase,
-                             UpdateContentUsecase updateContentUsecase,
+    public ContentController(SaveContentUsecase saveContentUsecase,
                              FindContentUsecase findContentUsecase,
-                             InactivateContentUsecase inactivateContentUsecase,
                              ContentMapper contentMapper) {
-        this.createContentUsecase = createContentUsecase;
-        this.updateContentUsecase = updateContentUsecase;
+        this.saveContentUsecase = saveContentUsecase;
         this.findContentUsecase = findContentUsecase;
-        this.inactivateContentUsecase = inactivateContentUsecase;
         this.contentMapper = contentMapper;
     }
 
@@ -57,7 +49,7 @@ public class ContentController implements ContentApi {
                                               @Valid @Body ContentRequest contentRequest,
                                               @Header("tenantId") String tenantId) {
         var content = contentMapper.fromContentRequest(contentRequest, true, tenantId, authentication.getId());
-        return HttpResponse.created(contentMapper.toContentResponse(createContentUsecase.create(content)));
+        return HttpResponse.created(contentMapper.toContentResponse(saveContentUsecase.create(content)));
     }
 
     @Override
@@ -67,7 +59,7 @@ public class ContentController implements ContentApi {
         var content = contentMapper.fromContentRequest(contentRequest, true, tenantId);
         return findContentUsecase.findOne(id, tenantId)
                 .map(c -> HttpResponse.ok(contentMapper.toContentResponse(
-                        updateContentUsecase.update(id, content))))
+                        saveContentUsecase.update(id, content))))
                 .orElseGet(HttpResponse::notFound);
     }
 
@@ -108,7 +100,7 @@ public class ContentController implements ContentApi {
     public HttpResponse<ContentResponse> delete(@PathVariable UUID id, @Header("tenantId") String tenantId) {
         return findContentUsecase.findOne(id, tenantId)
                 .map(content -> HttpResponse.ok(contentMapper.toContentResponse(
-                        inactivateContentUsecase.inactivate(id, tenantId))))
+                        saveContentUsecase.inactivate(id, tenantId))))
                 .orElseGet(HttpResponse::notFound);
     }
 }
